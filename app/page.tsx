@@ -21,7 +21,7 @@ export default function Home() {
             Build Next.js-style apps with Vite and deploy them to the edge.
           </h1>
           <p className="hero__lead">
-            This App Router project is wired for vinext, Tailwind CSS, and Cloudflare Workers.
+            This App Router project is wired for vinext and Cloudflare Workers.
           </p>
         </div>
 
