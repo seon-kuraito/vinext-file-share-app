@@ -9,3 +9,7 @@ next-env.d.ts
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# local scratch: working notes and the D1 connection smoke test
+todo.md
+init.sql

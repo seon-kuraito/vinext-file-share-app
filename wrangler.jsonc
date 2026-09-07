@@ -21,7 +21,14 @@
 	"observability": {
 		"enabled": true
 	},
-	"upload_source_maps": true
+	"upload_source_maps": true,
+	"d1_databases": [
+		{
+			"binding": "vinext_file_share_database",
+			"database_name": "vinext-file-share-database",
+			"database_id": "a8ca67e0-8d41-4c68-a6a7-cd969608f3e0"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
