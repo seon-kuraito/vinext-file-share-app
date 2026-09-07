@@ -5,6 +5,7 @@
   "packageManager": "npm@11.13.0",
   "dependencies": {
     "@vinext/cloudflare": "latest",
+    "drizzle-orm": "^0.45.2",
     "react": "latest",
     "react-dom": "latest",
     "react-server-dom-webpack": "latest",
@@ -17,6 +18,7 @@
     "@types/react-dom": "latest",
     "@vitejs/plugin-react": "latest",
     "@vitejs/plugin-rsc": "latest",
+    "drizzle-kit": "^0.31.10",
     "typescript": "latest",
     "vite": "latest",
     "wrangler": "^4.128.0"
