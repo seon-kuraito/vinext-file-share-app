@@ -9,6 +9,7 @@
     "hono": "^4.13.7",
     "react": "latest",
     "react-dom": "latest",
+    "react-dropzone": "^20.1.1",
     "react-server-dom-webpack": "latest",
     "vinext": "latest"
   },
