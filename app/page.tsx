@@ -11,6 +11,8 @@ type UploadResult = {
   expiresAt?: string;
 };
 
+type ExpirationOption = "1" | "3" | "5" | "7";
+
 type CopyStatus = "idle" | "copied" | "failed";
 
 export default function Home() {
@@ -18,6 +20,7 @@ export default function Home() {
   const [isUploading, setIsUploading] = useState(false);
   const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
   const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
+  const [expiration, setExpiration] = useState<ExpirationOption>("7");
 
   // Dropzone always hands over an array; multiple: false keeps it at one entry
   const onDrop = (acceptedFiles: File[]) => {
@@ -37,6 +40,10 @@ export default function Home() {
     multiple: false,
   });
 
+  const handleExpiration = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setExpiration(e.target.value as ExpirationOption);
+  };
+
   const handleUpload = async () => {
     if (!file) return;
 
@@ -49,7 +56,7 @@ export default function Home() {
 
       // The server reads name, size and type off this File; client copies are not trusted
       formData.append("file", file);
-      formData.append("expiration", "7"); // Lifetime in days, read by the server
+      formData.append("expiration", expiration); // Lifetime in days, read by the server
 
       const res = await fetch("/api/upload", {
         method: "POST",
@@ -131,6 +138,18 @@ export default function Home() {
             <p>Name: {file.name}</p>
             <p>Size: {file.size} bytes</p>
             <p>Type: {file.type}</p>
+            <label htmlFor="expiration">Expiration (days):</label>
+            <select
+              id="expiration"
+              value={expiration}
+              onChange={handleExpiration}
+            >
+              <option value="1">1</option>
+              <option value="3">3</option>
+              <option value="5">5</option>
+              <option value="7">7</option>
+            </select>
+            <br />
             <button
               type="button"
               onClick={handleUpload}
