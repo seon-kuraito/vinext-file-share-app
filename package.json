@@ -36,7 +36,8 @@
     "start": "wrangler dev --config dist/server/wrangler.json",
     "deploy": "vinext-cloudflare deploy --config dist/server/wrangler.json",
     "preview": "npm run build && npm run start --",
-    "db:generate": "npx drizzle-kit generate",
-    "db:migrate": "npx drizzle-kit migrate"
+    "db:generate": "drizzle-kit generate",
+    "db:migrate-local": "wrangler d1 migrations apply DB --local",
+    "db:migrate-remote": "wrangler d1 migrations apply DB --remote"
   }
 }
