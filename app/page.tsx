@@ -166,6 +166,7 @@ export default function Home() {
             {copyStatus === "failed" && (
               <p>Copy failed. Select the URL and copy it by hand.</p>
             )}
+            {/* No locale argument: language and time zone both follow the reader's browser */}
             {uploadResult?.expiresAt && (
               <p>Expires at: {new Date(uploadResult.expiresAt).toLocaleString()}</p>
             )}
