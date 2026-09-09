@@ -26,7 +26,9 @@
 		{
 			"binding": "DB",
 			"database_name": "vinext-file-share-database",
-			"database_id": "a8ca67e0-8d41-4c68-a6a7-cd969608f3e0"
+			"database_id": "a8ca67e0-8d41-4c68-a6a7-cd969608f3e0",
+			// drizzle-kit writes here; wrangler defaults to ./migrations, which does not exist
+			"migrations_dir": "drizzle/migrations"
 		}
 	],
 	"r2_buckets": [
