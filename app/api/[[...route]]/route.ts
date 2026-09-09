@@ -38,13 +38,20 @@ app.post("/upload", async (c) => {
     }, 400);
   }
 
-  // The R2 object key, also stored in D1 so a download route can find the bytes
-  const filePath = `/upload/${Date.now()}-${file.name}`;
-  const expiresAt = new Date(Date.now() + (Number(expiration) * 24 * 60 * 60 * 1000)).toISOString();
+  // Read the clock once, so filePath, createdAt and expiresAt all mean the same instant
+  const now = Date.now();
+
+  // crypto is a Workers global: no import, no nodejs_compat flag
+  const id = crypto.randomUUID();
+  const fileName = file.name;
+  const filePath = `/upload/${now}-${file.name}`;
+  const contentType = file.type;
+  const createdAt = new Date(now).toISOString();
+  const expiresAt = new Date(now + (Number(expiration) * 24 * 60 * 60 * 1000)).toISOString();
 
   // R2 first: an object with no row is only wasted storage
   try {
-    await bucket.put(filePath, file, { httpMetadata: { contentType: file.type } });
+    await bucket.put(filePath, file, { httpMetadata: { contentType } });
   } catch (error) {
     return c.json({
       success: false,
@@ -54,13 +61,13 @@ app.post("/upload", async (c) => {
 
   // D1 second: the row makes the file visible, so it must not exist before the bytes do
   try {
-    // $inferInsert derives the insert shape from the schema, so a wrong key fails here
+    // $inferInsert derives the insert shape from the schema: a wrong or missing key fails the type check
     const data: typeof files.$inferInsert = {
-      // id: the schema $default generates a UUID on insert
-      fileName: file.name,
+      id,
+      fileName,
       filePath,
-      contentType: file.type,
-      // createdAt: the schema $default fills it on insert
+      contentType,
+      createdAt,
       expiresAt,
     };
 
@@ -77,7 +84,8 @@ app.post("/upload", async (c) => {
   return c.json({
     success: true,
     message: "File uploaded successfully",
-    filePath,
+    // Origin from the request works in dev and production; /api comes from basePath
+    url: `${new URL(c.req.url).origin}/api/files/${id}`,
     expiresAt,
   });
 });
